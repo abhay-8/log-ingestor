@@ -3,7 +3,6 @@ package config
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/abhay-8/log-ingestor/backend/database"
 	"github.com/abhay-8/log-ingestor/backend/models"
@@ -34,7 +33,7 @@ func GetFromCache(key string) []models.Log {
 	return logs
 }
 
-func SetInCache(key string, data []models.Log) error {
+func SetInCache(key string, logs []models.Log) error {
 	data, err := json.Marshal(logs)
 	if err != nil {
 		Logger.Warnw("Error marshalling data from cache", "Error", err)
@@ -43,18 +42,18 @@ func SetInCache(key string, data []models.Log) error {
 	if err := database.RedisClient.Set(ctx, key, data, 0).Err(); err != nil {
 		Logger.Warnw("Error setting data in cache", "Error:", err)
 	}
-	return nil
 }
 
-func RemovedFromCache(key string) error {
+func RemovedFromCache(key string) {
 	err := database.RedisClient.Del(ctx, key).Err()
-	if err != nil {
-		if err == redis.Nil {
-			return nil
-		}
-
+	if err != nil && err != redis.Nil {
 		Logger.Warnw("Error removing data from cache", "Error:", err)
-		return fmt.Errorf("Error removing data from cache")
 	}
-	return nil
+}
+
+func FlushToCache() {
+	err := database.RedisClient.FlushAll(ctx).Err()
+	if err != nil {
+		Logger.Warnw("Error flushing data to cache", "Error:", err)
+	}
 }

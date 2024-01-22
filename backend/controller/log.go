@@ -4,6 +4,7 @@ import (
 	"github.com/abhay-8/log-ingestor/backend/config"
 	"github.com/abhay-8/log-ingestor/backend/database"
 	"github.com/abhay-8/log-ingestor/backend/models"
+	"github.com/abhay-8/log-ingestor/backend/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
