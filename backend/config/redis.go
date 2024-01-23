@@ -6,7 +6,6 @@ import (
 
 	"github.com/abhay-8/log-ingestor/backend/database"
 	"github.com/abhay-8/log-ingestor/backend/models"
-	"github.com/abhay-8/log-ingestor/models"
 	"github.com/redis/go-redis/v9"
 )
 

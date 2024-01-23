@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/abhay-8/log-ingestor/backend/config"
 	"github.com/abhay-8/log-ingestor/backend/database"
+	"github.com/abhay-8/log-ingestor/routers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -27,7 +28,9 @@ func main() {
 	app.Use(helmet.New())
 	app.Use(logger.New())
 	app.Use(config.CORS())
-	// app.Use(config.RATE_LIMITER())
+	app.Use(config.RATE_LIMITER())
+
+	routers.LogRouter(app)
 
 	app.Listen(":" + database.CONFIG.PORT)
 }
